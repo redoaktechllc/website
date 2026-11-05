@@ -1,0 +1,47 @@
+---
+import Container from "@/components/Container.astro";
+import SectionHead from "@/components/SectionHead.astro";
+import Icon from "@/components/Icon.astro";
+import { careIncluded, careSeparate } from "@/lib/site";
+---
+
+<section id="care" class="scroll-anchor bg-char-800 py-16 text-white sm:py-20 lg:py-24">
+  <Container>
+    <SectionHead
+      tone="dark"
+      kicker="Care plan"
+      title="The $79/month that keeps your site working"
+      sub="Required on Launch, because a website that isn't maintained slowly stops working. Here's exactly what it covers."
+    />
+
+    <div class="mt-12 grid gap-10 md:grid-cols-[1.3fr_1fr] md:gap-14">
+      <div>
+        <h3 class="text-h3 font-extrabold text-white">Included every month</h3>
+        <ul class="mt-5 grid gap-3">
+          {
+            careIncluded.map((item) => (
+              <li class="grid grid-cols-[auto_1fr] gap-3 text-white/90">
+                <Icon name="check" class="mt-0.5 size-5 shrink-0 text-brand-300" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-h3 font-extrabold text-white/70">Quoted separately</h3>
+        <ul class="mt-5 grid gap-3">
+          {
+            careSeparate.map((item) => (
+              <li class="grid grid-cols-[auto_1fr] gap-3 text-white/55">
+                <Icon name="minus" class="mt-0.5 size-5 shrink-0 text-white/40" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,33 @@
+---
+import Container from "@/components/Container.astro";
+import SectionHead from "@/components/SectionHead.astro";
+import { steps } from "@/lib/site";
+---
+
+<section id="how" class="scroll-anchor py-16 sm:py-20 lg:py-24">
+  <Container>
+    <SectionHead
+      kicker="How it works"
+      title="From first call to live site, without the agency runaround"
+      sub="Four steps. You only pay once you've seen what you're getting."
+    />
+    <ol class="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2">
+      {
+        steps.map((step) => (
+          <li class="grid grid-cols-[auto_1fr] gap-x-5 border-t border-line pt-5">
+            <span
+              class="font-heading text-[2.4rem] font-black leading-none tabular-nums text-brand"
+              aria-hidden="true"
+            >
+              {step.n}
+            </span>
+            <div>
+              <h3 class="text-h3 font-extrabold text-ink">{step.title}</h3>
+              <p class="mt-2 text-ink-70">{step.body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </Container>
+</section>

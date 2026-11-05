@@ -1,0 +1,80 @@
+---
+import "@/styles/global.css";
+import { site } from "@/lib/site";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import CallBar from "@/components/CallBar.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  jsonLd?: boolean;
+}
+
+const {
+  title,
+  description,
+  path = "/",
+  ogTitle = title,
+  ogDescription = description,
+  jsonLd = false,
+} = Astro.props;
+
+const canonical = new URL(path, site.url).href;
+const ogImage = new URL("/assets/og.png", site.url).href;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: site.legalName,
+  description:
+    "Web design studio building fast, modern websites for local businesses in Northeast Ohio.",
+  url: site.url + "/",
+  email: site.email,
+  telephone: "+1-234-237-8715",
+  areaServed: site.region,
+  founder: [
+    { "@type": "Person", name: "Giancarlo Zaccaudelli" },
+    { "@type": "Person", name: "Will Ryan" },
+  ],
+  foundingDate: "2026",
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/assets/favicon-64.png" sizes="any" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body class="min-h-dvh pb-[74px] md:pb-0">
+    <a
+      href="#main"
+      class="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:left-1/2 focus-visible:top-2 focus-visible:z-[100] focus-visible:-translate-x-1/2 focus-visible:rounded-md focus-visible:bg-ink focus-visible:px-4 focus-visible:py-2 focus-visible:font-semibold focus-visible:text-white"
+      >Skip to content</a
+    >
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <CallBar />
+  </body>
+</html>

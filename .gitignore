@@ -4,6 +4,10 @@ node_modules/
 shots/
 .cache/
 
+# Astro build output
+dist/
+.astro/
+
 # Local-only notes (not for the repo or the live site)
 details.tx
 details.txt

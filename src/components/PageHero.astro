@@ -1,0 +1,28 @@
+---
+import Container from "@/components/Container.astro";
+
+interface Props {
+  backLabel: string;
+  backHref: string;
+  tag?: string;
+  title: string;
+  sub?: string;
+}
+const { backLabel, backHref, tag, title, sub } = Astro.props;
+---
+
+<section class="bg-char py-14 text-white sm:py-16 lg:py-20">
+  <Container>
+    <a
+      href={backHref}
+      class="inline-block text-[0.95rem] font-semibold text-white/80 transition-colors hover:text-brand-300"
+    >
+      &larr; {backLabel}
+    </a>
+    {tag && <p class="mt-5 font-heading text-[0.85rem] font-bold text-brand-300">{tag}</p>}
+    <h1 class:list={["max-w-[22ch] text-h1 font-black text-white", tag ? "mt-2" : "mt-5"]}>
+      {title}
+    </h1>
+    {sub && <p class="mt-4 max-w-[46rem] text-lede text-white/80">{sub}</p>}
+  </Container>
+</section>

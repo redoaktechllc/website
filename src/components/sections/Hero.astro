@@ -1,0 +1,55 @@
+---
+import Container from "@/components/Container.astro";
+import RingMark from "@/components/RingMark.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { site } from "@/lib/site";
+
+const trust = [
+  { strong: "Free preview first", span: "You see the real site before deciding." },
+  { strong: "You own your site", span: "Yours after final payment. Never locked in." },
+  { strong: site.region, span: "Local. A person picks up the phone." },
+];
+---
+
+<section class="relative overflow-hidden bg-char text-white">
+  <!-- Ring signature — photo-ready slot (a founder image can replace this later) -->
+  <RingMark
+    animate
+    class="pointer-events-none absolute top-1/2 right-[-28%] z-0 w-[min(560px,86vw)] -translate-y-1/2 opacity-90 sm:right-[-14%] lg:right-[-4%]"
+  />
+
+  <Container class="relative z-10">
+    <div class="max-w-[42rem] py-16 sm:py-20 lg:py-28">
+      <p class="mb-5 font-heading text-sm font-semibold text-brand-300">
+        Websites for {site.region}
+      </p>
+      <h1 class="text-display text-balance font-black text-white">
+        Modern business. Outdated website. Let&rsquo;s fix that.
+      </h1>
+      <p class="mt-6 max-w-[34ch] text-lede text-white/80">
+        Fast, modern websites for local businesses across Northeast Ohio. See your new site, free,
+        before you pay a dime.
+      </p>
+
+      <div class="mt-9 flex flex-wrap gap-3.5">
+        <a href="/#contact" class={buttonVariants({ variant: "default", size: "xl" })}>
+          See a free preview
+        </a>
+        <a href="/#pricing" class={buttonVariants({ variant: "outlineDark", size: "xl" }) + " border"}>
+          View pricing
+        </a>
+      </div>
+
+      <dl class="mt-12 grid max-w-[38rem] gap-x-6 gap-y-5 border-t border-white/15 pt-7 sm:grid-cols-3">
+        {
+          trust.map((t) => (
+            <div class="sm:border-l sm:border-white/12 sm:pl-5 sm:first:border-l-0 sm:first:pl-0">
+              <dt class="font-heading text-[1.02rem] font-bold text-white">{t.strong}</dt>
+              <dd class="mt-1 text-[0.92rem] text-white/60">{t.span}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </Container>
+</section>

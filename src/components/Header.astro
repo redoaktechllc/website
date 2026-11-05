@@ -1,0 +1,124 @@
+---
+import Container from "@/components/Container.astro";
+import Icon from "@/components/Icon.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { nav, site } from "@/lib/site";
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-line-dark bg-char text-white transition-shadow duration-300 data-[scrolled]:shadow-header"
+>
+  <Container>
+    <div class="flex min-h-[68px] items-center justify-between gap-4">
+      <a
+        href="/"
+        aria-label="Red Oak home"
+        class="inline-flex items-center gap-2.5 whitespace-nowrap font-heading text-[1.2rem] font-extrabold tracking-[-0.02em] text-white"
+      >
+        <img src="/assets/logo-mark.png" alt="" width="430" height="244" class="h-[26px] w-auto" />
+        Red Oak
+      </a>
+
+      <nav aria-label="Primary" class="hidden md:block">
+        <ul class="flex items-center gap-8">
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="border-b-2 border-transparent py-1 text-[0.95rem] font-medium text-white/85 transition-colors hover:border-brand hover:text-white"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <div class="hidden md:block">
+          <a
+            href={site.phoneHref}
+            class={buttonVariants({ variant: "default", size: "xl" }) + " h-10 px-4"}
+          >
+            Call {site.phoneDisplay}
+          </a>
+        </div>
+        <button
+          type="button"
+          id="nav-toggle"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          class="inline-flex size-11 items-center justify-center rounded-md border border-white/20 bg-white/5 text-white transition-colors hover:bg-white/10 md:hidden"
+        >
+          <Icon name="menu" class="size-[22px] [.open_&]:hidden" />
+          <Icon name="close" class="hidden size-[22px] [.open_&]:block" />
+        </button>
+      </div>
+    </div>
+  </Container>
+
+  <div id="mobile-menu" hidden class="border-t border-line-dark bg-char-900 md:hidden">
+    <Container>
+      <ul class="grid gap-1 py-3">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="block border-b border-line-dark py-3 font-heading font-semibold text-white"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a
+            href={site.phoneHref}
+            class="block py-3 font-heading font-semibold text-brand-300"
+          >
+            Call {site.phoneDisplay}
+          </a>
+        </li>
+      </ul>
+    </Container>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById("site-header");
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("mobile-menu");
+
+  if (toggle && menu) {
+    const open = () => {
+      menu.hidden = false;
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.setAttribute("aria-label", "Close menu");
+      toggle.classList.add("open");
+    };
+    const close = () => {
+      menu.hidden = true;
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open menu");
+      toggle.classList.remove("open");
+    };
+    toggle.addEventListener("click", () => {
+      toggle.getAttribute("aria-expanded") === "true" ? close() : open();
+    });
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", close));
+  }
+
+  if (header) {
+    const onScroll = () => {
+      if (window.scrollY > 8) header.setAttribute("data-scrolled", "");
+      else header.removeAttribute("data-scrolled");
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+</script>

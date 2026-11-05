@@ -1,0 +1,44 @@
+---
+import Container from "@/components/Container.astro";
+import SectionHead from "@/components/SectionHead.astro";
+import Icon from "@/components/Icon.astro";
+import { included } from "@/lib/site";
+
+const [lead, ...rest] = included;
+---
+
+<section id="services" class="scroll-anchor bg-sand py-16 sm:py-20 lg:py-24">
+  <Container>
+    <SectionHead
+      kicker="What you get"
+      title="Everything a local business needs, nothing it doesn't"
+      sub="Every Red Oak site is built mobile-first and tuned to turn visitors into calls."
+    />
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
+      <!-- Featured lead item -->
+      <div class="relative overflow-hidden rounded-xl border border-line bg-white p-7 shadow-soft sm:p-9">
+        <span class="inline-flex size-11 items-center justify-center rounded-lg bg-brand text-white">
+          <Icon name="check" class="size-6" />
+        </span>
+        <h3 class="mt-5 text-h3 font-extrabold text-ink">{lead.title}</h3>
+        <p class="mt-2 max-w-[34ch] text-ink-70">{lead.body}</p>
+      </div>
+
+      <!-- Remaining items as a quiet checklist -->
+      <ul class="grid gap-x-8 gap-y-5 self-center sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+        {
+          rest.map((item) => (
+            <li class="grid grid-cols-[auto_1fr] gap-3">
+              <Icon name="check" class="mt-0.5 size-5 shrink-0 text-brand" />
+              <div>
+                <span class="font-semibold text-ink">{item.title}</span>
+                <span class="mt-0.5 block text-[0.95rem] text-ink-70">{item.body}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Container>
+</section>

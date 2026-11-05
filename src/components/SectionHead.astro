@@ -1,0 +1,41 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  sub?: string;
+  tone?: "light" | "dark";
+  class?: string;
+}
+const { kicker, title, sub, tone = "light", class: className = "" } = Astro.props;
+---
+
+<div class:list={["max-w-[46rem]", className]}>
+  <p
+    class:list={[
+      "mb-3 font-heading text-[0.95rem] font-semibold",
+      tone === "dark" ? "text-brand-300" : "text-brand-ink",
+    ]}
+  >
+    {kicker}
+  </p>
+  <h2
+    class:list={[
+      "text-h2 font-extrabold",
+      tone === "dark" ? "text-white" : "text-ink",
+    ]}
+  >
+    {title}
+  </h2>
+  {
+    sub && (
+      <p
+        class:list={[
+          "mt-4 text-lede",
+          tone === "dark" ? "text-white/78" : "text-ink-70",
+        ]}
+      >
+        {sub}
+      </p>
+    )
+  }
+</div>

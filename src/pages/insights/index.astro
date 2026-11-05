@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Container from "@/components/Container.astro";
+import PageHero from "@/components/PageHero.astro";
+
+const entries = (await getCollection("insights")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<Base
+  title="Insights — Red Oak"
+  description="Short, practical reads for local business owners in Northeast Ohio: websites, previews, care plans and getting found online."
+  path="/insights"
+>
+  <PageHero
+    backLabel="Back to home"
+    backHref="/"
+    title="Insights"
+    sub="Short, practical reads for local business owners. No jargon."
+  />
+
+  <section class="py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          entries.map((entry) => (
+            <a
+              href={`/insights/${entry.id}`}
+              class="group block border-t border-line pt-5 transition-colors hover:border-brand"
+            >
+              <span class="font-heading text-[0.82rem] font-bold text-brand-ink">{entry.data.tag}</span>
+              <h2 class="mt-2 text-[1.2rem] font-extrabold text-ink">
+                <span class="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-300 group-hover:bg-[length:100%_2px]">
+                  {entry.data.title}
+                </span>
+              </h2>
+              <p class="mt-2 text-[0.96rem] text-ink-70">{entry.data.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+</Base>

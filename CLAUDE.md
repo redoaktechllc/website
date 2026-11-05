@@ -39,11 +39,13 @@ Red Oak's business model, pricing, and brand are the source of truth in the Obsi
 
 ## Tech stack
 
-Bespoke, zero-dependency **static site** (HTML + CSS + a little vanilla JS) — matches the vault's Decision Log D8 (static unless a blog/CMS needs Astro). No framework, no build step. Deployed as static files on Vercel.
+**Astro 5** (static output) + **React islands** (`@astrojs/react`) + **Tailwind v4** (`@tailwindcss/vite`) + **shadcn/ui** (Base UI primitives, `base-nova` style; components in `src/components/ui/`). Prerendered to static HTML by `astro build`; ships **zero JS except the contact-form island** (the header mobile menu + scroll-state use a small inline vanilla `<script>`, not React). Deployed on Vercel (framework preset: Astro, output `dist`).
+
+> This stack **overrides Decision Log D8** (previously zero-dependency static HTML/CSS/JS). See the newest Decision Log entry. Brand colors/tokens live in `src/styles/global.css` (`@theme` + shadcn CSS variables remapped to red/black/white), not a hand-written stylesheet.
 
 ### Design direction — Red / Black / White (brand identity)
 - From the owner's logo sheet `brand/Red Oak Monogram Concepts.png` (**Concept 1 chosen**). Logo mark extracted to `public/assets/logo-mark.png` (R + red oak leaf, transparent); favicons `favicon-64.png` + `apple-touch-icon.png`; social card `og.png`.
-- Colors (CSS vars in `public/assets/styles.css`): `--paper #F7F6F4`, `--sand #EEECE8`, `--ink #17161A`, `--char #161419` (dark sections/hero/footer), `--brand #D81E2C` (brand red, actions), `--brand-300 #F2616B` (red on dark). White text on brand red = 5:1.
+- Colors (CSS vars in `src/styles/global.css`): `--paper #F7F6F4`, `--sand #EEECE8`, `--ink #17161A`, `--char #161419` (hero/header), `--char-800 #1F1C24` (care-plan dark), `--oxblood #2A0E14` (contact dark), `--brand #D81E2C` (brand red, actions), `--brand-300 #F2616B` (red on dark). Also mapped onto shadcn tokens (`--primary` = brand red, etc.). White text on brand red = 5:1.
 - Type: **Archivo** (display/headings) + **Inter** (body). No serif.
 - Follow the vault's anti-slop list. Judge the 390px phone view first. The call action is the most visible thing on a phone; phone number is a `tel:` link.
 - **Design engine:** the **ui-ux-pro-max** skill is installed at `.claude/skills/` (run `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system`). Its output is a recommendation only — the vault's anti-slop rules and the owner's explicit choices win on conflict.
@@ -51,32 +53,45 @@ Bespoke, zero-dependency **static site** (HTML + CSS + a little vanilla JS) — 
 ## Layout
 
 ```
-public/                 the ONLY thing deployed (Vercel outputDirectory = public)
-public/index.html       landing page (hero, how it works, what you get, pricing,
-                        care plan, founding offer, about, insights teaser, contact, footer)
-public/insights/        content hub (index.html) + individual articles
-public/assets/          styles.css, main.js, logo-mark.png, favicon-64.png,
-                        apple-touch-icon.png, og.png
-public/{robots.txt, sitemap.xml, 404.html}
-brand/                  source brand art (monogram concepts) — NOT served
-.claude/skills/         ui-ux-pro-max design engine — NOT served
-scripts/serve.mjs       zero-dep local server (serves public/), node scripts/serve.mjs → :4321
-vercel.json             outputDirectory=public, cleanUrls, security headers, asset caching
+src/pages/index.astro        landing page — composes the section components below
+src/pages/insights/          index.astro (hub) + [...slug].astro (renders articles)
+src/pages/404.astro
+src/content/insights/*.md    the 3 articles (Astro content collection; see src/content.config.ts)
+src/components/sections/     Hero, HowItWorks, WhatYouGet, Pricing, CarePlan,
+                             FoundingOffer, About, Insights, Contact (.astro)
+src/components/              Header, Footer, CallBar, Container, SectionHead,
+                             PageHero, Icon, RingMark (.astro)
+src/components/islands/      ContactForm.tsx  (the only React island — Web3Forms + sonner toast)
+src/components/ui/           shadcn components (button, card, input, textarea, label, badge, sonner…)
+src/layouts/Base.astro       HTML shell: head/meta/OG/JSON-LD + Header/Footer/CallBar
+src/lib/site.ts              site constants + all section content (phone, pricing, steps, posts…)
+src/styles/global.css        Tailwind v4 theme: brand tokens + shadcn vars + type/space/elevation
+public/                      static assets served as-is: logo-mark.png, favicons, og.png,
+                             robots.txt, sitemap.xml (NO HTML — pages come from src/)
+brand/                       source brand art — NOT served
+.claude/skills/              ui-ux-pro-max design engine — NOT served
+astro.config.mjs             react() + tailwindcss() vite plugin, output: 'static'
+vercel.json                  framework=astro, outputDirectory=dist, cleanUrls, headers, caching
 ```
+
+To edit copy or pricing, change `src/lib/site.ts` (most content) or the relevant section component; article text lives in `src/content/insights/*.md`.
 
 ## Run locally
 
 ```
-node scripts/serve.mjs          # http://localhost:4321  (zero dependencies)
-# or: python3 -m http.server 4321
+npm install
+npm run dev        # http://localhost:4321  (astro dev, hot reload)
+npm run build      # → dist/  (static output that actually deploys)
+npm run preview    # serve the built dist/ locally
 ```
 
 ## Quality gates (before deploy)
 
-1. Phone (390px) + desktop screenshots — read them, fix anything generic/broken.
-2. Playwright browser check: nav, `tel:`/`mailto:` links, form submit, console errors, keyboard focus, phone + desktop widths.
-3. Score against the vault Design Playbook rubric (8+/10 to ship).
+1. `npm run build` must pass clean (no type/content errors).
+2. Phone (390px) + desktop screenshots of the built site — read them, fix anything generic/broken.
+3. Playwright browser check: nav (mobile menu toggle), `tel:`/`mailto:` links, contact-form hydration, console errors, keyboard focus, reduced-motion, phone + desktop widths.
+4. Score against the vault Design Playbook rubric (8+/10 to ship).
 
 ## Deploy
 
-Push to `main` on `github.com/redoaktechllc/website` → Vercel auto-deploys. Custom domain `redoakllc.tech` connected in the Vercel project (set DNS at the registrar). Verify HTTPS + domain resolve before calling it live.
+Push to `main` on `github.com/redoaktechllc/website` → Vercel builds (`astro build`) and deploys `dist/`. Custom domain `redoakllc.tech` connected in the Vercel project (set DNS at the registrar). Verify HTTPS + domain resolve before calling it live.

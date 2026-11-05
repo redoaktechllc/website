@@ -1,0 +1,42 @@
+---
+import Container from "@/components/Container.astro";
+import RingMark from "@/components/RingMark.astro";
+import { buttonVariants } from "@/components/ui/button";
+---
+
+<section id="founding" class="scroll-anchor py-16 sm:py-20 lg:py-24">
+  <Container>
+    <div class="relative overflow-hidden rounded-2xl bg-brand p-8 text-white shadow-brand sm:p-10 lg:p-12">
+      <RingMark
+        class="pointer-events-none absolute -right-20 -bottom-24 z-0 w-80 opacity-35"
+        tone="light"
+      />
+      <div class="relative z-10 grid gap-7 lg:grid-cols-[1.5fr_auto] lg:items-center lg:gap-10">
+        <div>
+          <span
+            class="inline-flex rounded-full bg-white px-3 py-1 font-heading text-[0.78rem] font-bold tracking-[0.05em] text-brand-ink uppercase"
+          >
+            Founding offer
+          </span>
+          <h2 class="mt-5 text-h2 font-extrabold text-white">
+            The first three businesses in Northeast Ohio
+          </h2>
+          <p class="mt-3 max-w-[60ch] text-lede text-white/92">
+            We're taking on three founding clients at <strong class="font-bold">$497 to build</strong>
+            — half the usual Launch price — plus the standard $79/mo care plan.
+          </p>
+          <p class="mt-3 max-w-[60ch] text-white/80">
+            In return, if you're happy with the work: a short testimonial and two introductions to
+            other owners. That's the whole deal.
+          </p>
+        </div>
+        <a
+          href="/#contact"
+          class={buttonVariants({ variant: "onbrand", size: "xl" }) + " lg:w-auto"}
+        >
+          Claim a founding spot
+        </a>
+      </div>
+    </div>
+  </Container>
+</section>

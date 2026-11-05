@@ -1,0 +1,30 @@
+---
+import Base from "@/layouts/Base.astro";
+import Container from "@/components/Container.astro";
+import RingMark from "@/components/RingMark.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { site } from "@/lib/site";
+---
+
+<Base title="Page not found — Red Oak" description="The page you're after isn't here." path="/404">
+  <section class="relative overflow-hidden bg-char text-white">
+    <RingMark
+      class="pointer-events-none absolute top-1/2 right-[-24%] z-0 w-[min(520px,82vw)] -translate-y-1/2 opacity-80 lg:right-[-4%]"
+    />
+    <Container class="relative z-10">
+      <div class="flex min-h-[70vh] max-w-[40rem] flex-col justify-center py-20">
+        <p class="mb-5 font-heading text-sm font-semibold text-brand-300">404</p>
+        <h1 class="text-display text-balance font-black text-white">This page took a different branch</h1>
+        <p class="mt-6 max-w-[40ch] text-lede text-white/80">
+          The page you're after isn't here. Let's get you back to solid ground.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-3.5">
+          <a href="/" class={buttonVariants({ variant: "default", size: "xl" })}>Back to home</a>
+          <a href={site.phoneHref} class={buttonVariants({ variant: "outlineDark", size: "xl" }) + " border"}>
+            Call {site.phoneDisplay}
+          </a>
+        </div>
+      </div>
+    </Container>
+  </section>
+</Base>

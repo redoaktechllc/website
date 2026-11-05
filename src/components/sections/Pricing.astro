@@ -1,0 +1,96 @@
+---
+import Container from "@/components/Container.astro";
+import SectionHead from "@/components/SectionHead.astro";
+import Icon from "@/components/Icon.astro";
+import RingMark from "@/components/RingMark.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { tiers } from "@/lib/site";
+---
+
+<section id="pricing" class="scroll-anchor py-16 sm:py-20 lg:py-24">
+  <Container>
+    <SectionHead
+      kicker="Pricing"
+      title="Simple packages. Honest prices."
+      sub="A one-time build, then a monthly care plan that keeps everything working. Every project starts with a free preview."
+    />
+
+    <div class="mt-12 grid items-start gap-5 lg:grid-cols-3">
+      {
+        tiers.map((tier) => (
+          <article
+            class:list={[
+              "relative flex flex-col overflow-hidden rounded-2xl p-7 sm:p-8",
+              tier.featured
+                ? "bg-brand text-white shadow-brand lg:-translate-y-4"
+                : "border border-line bg-white text-ink",
+            ]}
+          >
+            {tier.featured && (
+              <RingMark
+                class="pointer-events-none absolute -top-16 -right-16 z-0 w-56 opacity-40"
+                tone="light"
+              />
+            )}
+            <div class="relative z-10 flex flex-1 flex-col">
+              {tier.featured && (
+                <span class="mb-4 inline-flex w-fit rounded-full bg-white px-3 py-1 font-heading text-[0.72rem] font-bold tracking-[0.04em] text-brand-ink uppercase">
+                  {tier.badge}
+                </span>
+              )}
+              <h3 class:list={["text-[1.4rem] font-extrabold", tier.featured ? "text-white" : "text-ink"]}>
+                {tier.name}
+              </h3>
+              <p class:list={["mt-1 text-[0.95rem]", tier.featured ? "text-white/85" : "text-ink-70"]}>
+                {tier.note}
+              </p>
+
+              <div class="mt-5 flex items-baseline gap-1.5">
+                <span class:list={["text-[0.9rem]", tier.featured ? "text-white/80" : "text-ink-70"]}>
+                  {tier.from}
+                </span>
+                <span class="font-heading text-[2.6rem] font-black tracking-[-0.03em] tabular-nums">
+                  {tier.amount}
+                </span>
+              </div>
+              <p
+                class:list={["mt-1 text-[0.95rem]", tier.featured ? "text-white/85" : "text-ink-70"]}
+                set:html={tier.term}
+              />
+
+              <ul class="mt-6 mb-7 grid flex-1 gap-2.5">
+                {tier.features.map((f) => (
+                  <li class="grid grid-cols-[auto_1fr] gap-2.5 text-[0.95rem]">
+                    <Icon
+                      name="check"
+                      class:list={["mt-0.5 size-4 shrink-0", tier.featured ? "text-white" : "text-brand"]}
+                    />
+                    <span class={tier.featured ? "text-white/92" : "text-ink-70"}>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="/#contact"
+                class={
+                  buttonVariants({
+                    variant: tier.featured ? "onbrand" : "dark",
+                    size: "xl",
+                  }) + " w-full"
+                }
+              >
+                {tier.cta}
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="mt-8 max-w-[60ch] text-[0.92rem] text-ink-70">
+      Starting prices — add-ons like extra pages, a logo or photography are quoted up front. Launch
+      and Growth are 50% to start and 50% at launch, and your care plan begins on launch day. You own
+      your site after final payment (Subscription sites stay with Red Oak until you buy out).
+    </p>
+  </Container>
+</section>

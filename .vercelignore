@@ -1,10 +1,17 @@
-# Keep the production deploy to just the static site.
+# Vercel builds the Astro project — keep source (src/, public/, config, content)
+# and let Vercel install dependencies. Only exclude what the build doesn't need.
+node_modules/
+dist/
+.astro/
 .claude/
 scripts/
-node_modules/
 shots/
-*.md
+design-system/
 details.tx
 details.txt
 seed.txt
-design-system/
+
+# Root-level docs only (NOT src/**/*.md content — anchored with a leading slash)
+/CLAUDE.md
+/EDITING.md
+/README.md

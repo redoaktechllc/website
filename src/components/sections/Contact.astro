@@ -1,0 +1,36 @@
+---
+import Container from "@/components/Container.astro";
+import { site } from "@/lib/site";
+import ContactForm from "@/components/islands/ContactForm.tsx";
+---
+
+<section id="contact" class="scroll-anchor bg-oxblood py-16 text-white sm:py-20 lg:py-24">
+  <Container>
+    <div class="grid gap-10 md:grid-cols-[1fr_1.05fr] md:gap-14 md:items-start">
+      <div>
+        <p class="mb-3 font-heading text-[0.95rem] font-semibold text-brand-300">Free preview</p>
+        <h2 class="text-h2 font-extrabold text-white">See your website before you pay</h2>
+        <p class="mt-4 max-w-[42ch] text-lede text-white/80">
+          Tell us a little about your business and we'll build a free preview — usually within a day.
+          No cost, no pressure.
+        </p>
+
+        <a
+          href={site.phoneHref}
+          class="mt-8 inline-block font-heading text-[clamp(1.8rem,1.4rem+2vw,2.6rem)] font-black tracking-[-0.02em] tabular-nums text-white transition-colors hover:text-brand-300"
+        >
+          {site.phoneDisplay}
+        </a>
+        <p class="mt-2 text-white/80">
+          Prefer email?
+          <a class="font-semibold text-brand-300" href={`mailto:${site.email}`}>{site.email}</a>
+        </p>
+        <p class="mt-4 text-[0.95rem] text-white/55">
+          {site.region}. We reply within one business day.
+        </p>
+      </div>
+
+      <ContactForm client:visible />
+    </div>
+  </Container>
+</section>
