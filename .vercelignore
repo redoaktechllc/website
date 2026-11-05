@@ -1,0 +1,10 @@
+# Keep the production deploy to just the static site.
+.claude/
+scripts/
+node_modules/
+shots/
+*.md
+details.tx
+details.txt
+seed.txt
+design-system/

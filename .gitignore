@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+.vercel/
+shots/
+.cache/
+
+# Local-only notes (not for the repo or the live site)
+details.tx
+details.txt
+seed.txt
